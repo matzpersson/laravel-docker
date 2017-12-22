@@ -1,5 +1,8 @@
 
 # Laravel_Docker template
+
+Includes docker file and shell script for launching the docker image. Script also creates a private subnet to communicate with seperate mysql database container if applicable. The Docker file installs mysql-clients.
+
 ## Install instructions
 
  * Make sure Docker is installed
