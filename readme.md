@@ -17,6 +17,52 @@ The runDocker.sh have a --network=my-net flag on the docker run command line. Th
  
  ## Configuration of Laravel
  
- With everything installed, copy 
+Once install is completed once again make sure you are in the working directory and stop the container instance:
+````ruby
+docker stop managd
+````
+
+If you chose mysql, use the mysql client to connect to your mysql instance to create a new mysql database. In this example mysql is installed in a seperate container named 'mysql_dev':
+
+````ruby
+mysql -h mysql_dev -u root -p
+create database testdb;
+CREATE USER 'homestead'@'%' IDENTIFIED BY '<yoursecret>';
+grant all privileges on *.* to 'homestead'@'%';
+````
+
+Copy .env.example to .env and change the database variable in .env:
+````ruby
+DB_CONNECTION=mysql
+DB_DATABASE=testdb
+DB_PASSWORD=<yoursecret>
+````
+
+Generate the Artisan key:
+````ruby
+php artisan key:generate
+````
+
+Migrate the tables and seed the database:
+````ruby
+php artisan migrate:refresh --seed
+````
+
+Install NPM components listed in package.json:
+````ruby
+npm install
+````
+
+Run NPM dev to compile js:
+````ruby
+npm run dev
+````
+
+and restart the Docker instance:
+````ruby
+./runDocker.sh
+````
+
+You should now be able to browse this app on http://localhost:8181 but this time with a connected db. 
  
 
