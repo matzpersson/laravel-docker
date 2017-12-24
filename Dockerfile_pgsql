@@ -1,0 +1,19 @@
+FROM php:7
+
+## -- Required for Postgress connection
+RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+
+RUN apt-get update -y && apt-get install -y openssl zip unzip git postgresql-client-9.3 libpq-dev
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN docker-php-ext-install pdo mbstring
+RUN docker-php-ext-install pdo pdo_pgsql
+
+WORKDIR /app
+COPY . /app
+RUN composer install
+
+CMD php artisan serve --host=0.0.0.0 --port=8181
+EXPOSE 8181
